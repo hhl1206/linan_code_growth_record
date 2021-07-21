@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图像数字处理</title>
+</head>
+
+<body>
+  <!-- <canvas id='canvas' width="800" height="600" style="width: 800px;height: 600px;"></canvas> -->
+
+
+  <!-- 显示数字图片 -->
+  <canvas id='c2' width="600" height="600" style="width: 800px;height: 600px;"></canvas>
+  <!-- 显示所有内容的图片 -->
+  <canvas id='c1' width="784" height="65000" style="width: 800px;height: 600px;"></canvas>
+  <!-- <video style='width:800px;height: 600px;' width="1920" height="1080"
+    src="https://vd2.bdstatic.com/mda-mgf3r7hxqsncnyef/sc/cae_h264/1626403524213400875/mda-mgf3r7hxqsncnyef.mp4?v_from_s=hkapp-haokan-nanjing&auth_key=1626679617-0-0-3e208abd63365e08952eda964c2e5c6c&bcevod_channel=searchbox_feed&pd=1&pt=3&abtest="></video> -->
+  <script>
+    // var canvas = document.querySelector('#canvas')
+    // var ctx = canvas.getContext('2d')
+    // var img = new Image();
+    // img.src = 'https://img1.baidu.com/it/u=2305185901,8723802&fm=26&fmt=auto&gp=0.jpg';
+
+    // img.onload = function () {
+    //   // 图片载入之后再进行绘制
+    //   ctx.drawImage(img, 0, 0)
+    // }
+
+    // 外面的表示的是里面的内容分辨率是多少，style里面的表示的是canvas这个元素的分辨率
+    // 修改了style里面的宽高后，里面画布的分辨率 依然是800 600，所以 它依然没有占满canvas的宽高
+    // 直接修改width和height <canvas id='canvas' width="200" height="150" style="width: 800px;height: 600px;"></canvas> 相当于整个画布的分辨率变成200，150的了，将图片的200，150的内容，放大成800，600的大小
+    // 如果视频本身是1920x1080的，如果width x height设置成800x600  就是把视频压缩成800x600 视频就会看起来比较模糊，合适的方法是：将width x height =  1920x1080 然后style中的宽高设置为800x600,清晰度上就会好些
+
+
+    var c1 = document.querySelector('#c1')
+    var ctx1 = c1.getContext('2d')
+    var c2 = document.querySelector('#c2')
+    var ctx2 = c2.getContext('2d')
+
+    var img = new Image();
+    img.src = 'https://img1.baidu.com/it/u=2305185901,8723802&fm=26&fmt=auto&gp=0.jpg';
+
+    img.onload = function () {
+      // 图片载入之后再进行绘制
+      ctx1.drawImage(img, 0, 0)
+
+      // 提取第一行数据
+      // 坐标+宽高
+      // 拿第一条
+      // var imgData = ctx1.getImageData(0, 0, 784, 1)
+      // 拿多个
+      for (var j = 0; j < 3; j++) {
+        var imgData = ctx1.getImageData(0, j, 784, 1)
+
+        // 结果数组将会是 784*4组数据
+        // imgData.width = 28
+        // imgData.height = 28
+        // 没有直接操作的方法，不能直接对这个对象进行操作，改为创建一个对象，然后将数据放到创建的对象中
+        // 循环遍历imgData.data,放到imgData1中
+        var imgData1 = ctx2.createImageData(28, 28)
+
+        for (var i = 0; i < 784 * 4; i++) {
+          imgData1.data[i] = imgData.data[i]
+        }
+        console.log(imgData1)
+
+        // c2.putImageData(对象,位置x,位置y,宽,高)
+        ctx1.putImageData(imgData1, 0, j * 28, 0, 0, 28, 28)
+      }
+      // // 结果数组将会是 784*4组数据
+      // console.log(imgData)
+      // // imgData.width = 28
+      // // imgData.height = 28
+      // // 没有直接操作的方法，不能直接对这个对象进行操作，改为创建一个对象，然后将数据放到创建的对象中
+      // // 循环遍历imgData.data,放到imgData1中
+      // var imgData1 = ctx2.createImageData(28, 28)
+
+      // for (var i = 0; i < 784 * 4; i++) {
+      //   imgData1.data[i] = imgData.data[i]
+      // }
+      // console.log(imgData1)
+
+      // // c2.putImageData(对象,位置x,位置y,宽,高)
+      // ctx1.putImageData(imgData1, 0, 0, 0, 0, 28, 28)
+    }
+  </script>
+</body>
+
+</html>

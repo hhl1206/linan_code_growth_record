@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "name": "listen for XDebug",
+      "type": "pwa-node",
+      "request": "attach",
+      "xdebugSettings": {
+        "max_children": 999,
+      }
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas</title>
+</head>
+
+<body>
+  <!-- cancas三要素：
+  1. id
+  2. width:画布内容宽度的像素大小（不同于 style中的宽高）
+  3. height：画布内容高度的像素大小
+  注意：绘制时，用JavaScript绘制，canvas仅仅是一个画布标签。
+  -->
+  <canvas id="canvas1" width="600" height="600">
+    这里的内容正常的画布是不会显示的，如果显示了，说明“你的浏览器不支持canvas“。canvas是H5出来之后才有的，H5是14年才正式出来标准的
+    不过canvas实际上在11年就出来了
+  </canvas>
+
+  <canvas id="canvas2" width="600" height="600"></canvas>
+  <canvas id="canvas3" width="600" height="600"></canvas>
+  <canvas id="canvas4" width="600" height="600"></canvas>
+
+  <script type='text/javascript'>
+    // 1. 要绘制，首先要找到画布
+    var canvas1 = document.querySelector('#canvas1')
+    console.log([canvas1])
+    // 2. 上下文对象（画笔对象）
+    var ctx = canvas1.getContext('2d')  // 画笔引擎用的是2d引擎，一般用于二维平面的绘制,webg1是3d引擎
+    // 一般如果真正画游戏，不会用纯canvas的3d画，有专门的其他引擎可供使用（白鹭引擎（游戏）、three.js(小型3d游戏)(贝壳找房360度全景）、虚幻4（大型游戏））
+
+    // 3. 绘制路径  矩形 rect
+    ctx.rect(50, 50, 300, 300)
+    // 4. 填充样式
+    // - 设置样式
+    // fillStyle: 填充的样式 
+    ctx.fillStyle = 'aqua'
+    // - 渲染
+    ctx.fill()
+
+    // 5. 描边，渲染s路径
+    ctx.lineWidth = 20;  // 路径宽度
+    ctx.strokeStyle = 'salmon';
+    ctx.stroke()
+
+
+    // 绘制线段 lineTo
+    var canvas2 = document.querySelector('#canvas2')
+    var ctx2 = canvas2.getContext('2d')
+    // 注意：绘制起始点的时候,说明一下：要开始画路径了
+    // 设置开始路径
+    ctx2.beginPath()
+    // 起点
+    ctx2.moveTo(100, 100)
+    // 终点
+    ctx2.lineTo(100, 300)
+    ctx2.lineTo(300, 100)
+    ctx2.lineTo(300, 250)
+    // 设置结束路径
+    // ctx2.closePath()
+    // 不写开始、结束的话，画的就是连笔的
+    // 绘制路径
+    // 起始路径的线段边缘设置为圆角（要注意顺序，在stroke()前面）
+    ctx2.lineCap = 'round';
+    // 拐角 默认值 ：miter
+    // ctx2.lineJoin = 'round';
+    // 斜接长度,超出的部分会被裁减掉
+    ctx2.miterLimit = 1; // "1px"
+
+    ctx2.strokeStyle = 'aqua';
+    ctx2.lineWidth = 10;
+    ctx2.stroke()
+    // 设置填充，起始点和终点相连
+    // ctx2.fill()
+    // 起始点，终点的角变圆滑点--线条样式的设置
+    //  lineCap:设置或返回线条的结束端点样式；lineJoin:设置或返回两条线相交时，所创建的拐角类型；lineWidth:设置或 返回当前的线条宽度；miterLimit：设置或返回最大斜接长度
+    // console.log(ctx2)
+    // 默认值：lineCap:butt;(平角)
+
+    // 绘制圆
+    var canvas3 = document.querySelector('#canvas3')
+    var ctx3 = canvas3.getContext('2d')
+    // anticlockwish:boolean 是否是逆时针 默认顺时针false
+    // 在中心处画一个半径为100的，起始位置（角度）0-2兀 180度：兀
+    // 兀是弧度制，180度是角度制，一弧度表示半径为1的圆中，长度为1的圆弧所对应的角度，兀就是半个圆周，也就是180度
+    ctx3.arc(300, 300, 100, 0, 2 * Math.PI, true)
+    ctx3.fillStyle = 'bisque';
+    ctx3.fill()
+    ctx3.stroke()
+
+    // 绘制文本
+    // font:设置或返回文本内容的当前字体属性；textAlign:设置或返回文本内容的当前对齐方式；textBaseline:设置或返回在绘制文本时使用的当前文本基线
+    // fillText() strokeText()
+    var canvas4 = document.querySelector('#canvas4')
+    var ctx4 = canvas4.getContext('2d')
+    console.log(ctx3)
+    // 文字小，说明文字设置的像素小，默认设置的是10像素 字体名称一定要设置
+    ctx4.font = '50px 微软雅黑';
+    // 设置模糊度20像素
+    ctx4.shadowBlur = 20;
+    // 阴影颜色
+    ctx4.shadowColor = 'rgba(0,0,0,1)';
+    // 阴影的偏移值
+    ctx4.shadowOffsetX = 0;
+    ctx4.shadowOffsetY = 0;
+
+    // 动起来 弹幕的效果
+    // 修改水平坐标值
+    // var x = 600
+    // // 设置间隔函数
+    // setInterval(function () {
+    //   // 画完之后要清空一下，避免重复画
+    //   // 清空画布
+    //   ctx4.clearRect(0, 0, 600, 600);
+    //   x -= 3; // 小一点，看起来不像卡帧
+    //   if (x < -200) {
+    //     x += 600
+    //   }
+    //   // 绘制文本：helloworld，宽：100，高：100 实心的
+    //   ctx4.fillText('helloworld', x, 100)
+    //   // 设置描边的内容，位置为 100，100 镂空的
+    //   ctx4.strokeText('中午吃啥？', x, 200)
+    // }, 10)
+
+    // 绘制文本：helloworld，宽：100，高：100 实心的
+    ctx4.fillText('helloworld', 100, 100)
+    // 设置描边的内容，位置为 100，100 镂空的
+    ctx4.strokeText('中午吃啥？', 100, 200)
+  </script>
+</body>
+
+</html>
