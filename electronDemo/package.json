@@ -1,0 +1,10 @@
+{
+  "name": "ElectronDemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "devDependencies": {
+    "@electron/remote": "^2.0.8",
+    "electron": "^21.1.0"
+  }
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文件选择框</title>
+</head>
+<body>
+  <button id="openbtn">打开一个图片并显示在应用中</button>
+  <button id="savebtn">保存文件</button>
+  <button id="messagebtn">弹出对话框</button>
+  <img id="images" style="width:100%"/>
+</body>
+<script>
+  // 这里是渲染线程，需要使用remote才能拿到dialog
+  const { dialog } = require("@electron/remote");
+  // fs是node.js中的
+  const fs = require('fs');
+
+  // 打开文件对话框
+  const openBtn = document.getElementById('openbtn');
+  openBtn.onclick = function() {
+    dialog.showOpenDialog({
+      title:'请选择照片',
+      // 默认选择文件,mac上好像不行
+      defaultPath:'icon_shipinhao@2x.png',
+      //过滤器,只允许选择的类型
+      filters:[{name:'image',extensions:['png']}],
+      // 自定义打开按钮
+      buttonLabel:'打开小姐姐',
+    }).then(res=>{
+      // 点击确认按钮后
+      const image = document.getElementById('images');
+      console.log(res)
+      image.setAttribute('src',res?.filePaths[0]);
+    }).catch(err=>{
+      console.log(err);
+    })
+  };
+
+  // 保存文件对话框
+  const savebtn = document.getElementById('savebtn');
+  savebtn.onclick = function() {
+    dialog.showSaveDialog({
+      title:'保存文件',
+    }).then(res=>{
+      console.log('ok',res);
+      // 写入文件
+      fs.writeFileSync(res.filePath,'jspang.com，这是写入的具体内容')
+    }).catch(err=>{
+      console.log(err);
+    })
+  };
+
+  // 消息对话框
+  const messagebtn = document.getElementById('messagebtn');
+  messagebtn.onclick = function() {
+    dialog.showMessageBox({
+      type:'warning',
+      title:'去不去由你',
+      message:'是不是周末要去吃东西',
+      // 结果以数组下标的形式返回
+      buttons:['我要去','不去了']
+    }).then(res=>{
+      console.log(res)
+    }).catch(err=>{
+      console.log('err',err);
+    })
+  };
+</script>
+</html>

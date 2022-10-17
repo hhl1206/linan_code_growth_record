@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h2>断网提醒测试</h2>
+</body>
+<script>
+  // online提示,是在打开应用后，如果有过一次断网，再联网时才会提示
+  window.addEventListener('online',function() {
+    alert('我胡汉三又回来了～');
+  })
+  // offline提示
+  window.addEventListener('offline',function() {
+    alert('哦豁，网络走丢了！');
+  })
+</script>
+</html>

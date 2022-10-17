@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>我是弹出子窗口</h1>
+  <!-- 向父窗口传递内容 -->
+  <button id="popbtn">向父窗口传递内容</button>
+  <script>
+    const popbtn = this.document.querySelector("#popbtn");
+    popbtn.onclick = function(e) {
+      // 从子窗口向父窗口传递的信息
+      // 父窗口向子窗口传值的话，先拿到window.open的返回值，为子窗口对象，然后对象.postMessage
+      // 第二个参数：要给哪个父窗口传递，默认是给所有的父窗口传递
+      window.opener.postMessage('我是子窗口传递过来的信息')
+    }
+  </script>
+</body>
+</html>
